@@ -1,0 +1,11 @@
+*.pyc
+*.pyo
+__pycache__/
+venv/
+db.sqlite3
+.DS_Store
+.env
+
+frontend/node_modules
+dist/
+frontend/package-lock.json
