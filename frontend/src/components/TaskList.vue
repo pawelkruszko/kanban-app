@@ -1,35 +1,70 @@
 <template>
     <div>
-      <h2>Tasks</h2>
-      <ul>
-        <li v-for="task in tasks" :key="task.id">
-          {{ task.title }} - {{ task.status }}
-        </li>
-      </ul>
-    </div>
-</template>
+      <h1>Task List</h1>
   
-<script>
-  import axios from 'axios'
+      <TaskForm @task-added="fetchTasks" />
+  
+      <div v-if="tasks.length">
+        <ul>
+          <li v-for="task in tasks" :key="task.id">
+            <strong>{{ task.title }}</strong> - {{ task.status }}
+            <p>{{ task.description }}</p>
+          </li>
+        </ul>
+      </div>
+      <p v-else>No tasks available.</p>
+    </div>
+  </template>
+  
+  <script>
+  import TaskForm from "./TaskForm.vue";
+  import api from "../services/api";
   
   export default {
-    name: 'TaskList',
+    name: "TaskList",
+    components: {
+      TaskForm,
+    },
     data() {
       return {
         tasks: [],
-      }
+      };
+    },
+    methods: {
+      async fetchTasks() {
+        try {
+          const response = await api.get("/tasks/");
+          this.tasks = response.data;
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+      },
     },
     created() {
-      axios.get('http://127.0.0.1:8000/api/tasks/')
-        .then(response => {
-          this.tasks = response.data
-        })
-        .catch(error => {
-          console.error('There was an error fetching tasks:', error)
-        })
-    }
-  }
-</script>
+      this.fetchTasks();
+    },
+  };
+  </script>
   
-<style scoped>
-</style>
+  <style scoped>
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin: 1rem 0;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  li strong {
+    color: #007bff;
+  }
+  
+  li p {
+    margin: 0.5rem 0 0;
+  }
+  </style>
+  
