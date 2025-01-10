@@ -1,12 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from kanban.tasks.views import TaskViewSet
-
-router = DefaultRouter()
-router.register(r'tasks', TaskViewSet, basename='task')
+from django.urls import path
+from kanban.tasks import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('', views.task_list, name='task_list'),
+    path('add/', views.add_task, name='add_task'),
 ]
