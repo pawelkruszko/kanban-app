@@ -1,19 +1,22 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanban</title>
-    <script src="https://unpkg.com/htmx.org@1.8.4"></script>
-</head>
-<body>
-    <header>
-        <h1>Kanban App</h1>
-    </header>
+{% load static %}
+{% block content %}
+<h2>Task List</h2>
 
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-</body>
-</html>
+<div class="task-list">
+    {% for task in tasks %}
+        <div class="task-item">
+            <h3>{{ task.title }}</h3>
+            <p>{{ task.description }}</p>
+            <p>Status: {{ task.get_status_display }}</p>
+            <button hx-post="{% url 'change_status' task.id %}" hx-target="#task-{{ task.id }}">
+                Change Status
+            </button>
+            <button class="delete" hx-delete="{% url 'delete_task' task.id %}" hx-target="#task-{{ task.id }}">
+                Delete
+            </button>
+        </div>
+    {% endfor %}
+</div>
+
+<a href="{% url 'add_task' %}">Add new task</a>
+{% endblock %}

@@ -2,10 +2,11 @@
 
 {% block content %}
 <h2>Task List</h2>
+
 <div id="task-list">
     {% for task in tasks %}
-        <div>{{ task.title }} - {{ task.description }} - {{ task.get_status_display }}</div>
+        <p>{{ task.title }} - {{ task.description }} - {{ task.status }}</p>
     {% endfor %}
 </div>
-<a href="{% url 'add_task' %}">Add new task</a>
+
 {% endblock %}
